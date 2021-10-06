@@ -1,0 +1,39 @@
+# Example of measuring and pouring water into a cup:
+//
+O3	bottle	1
+S43	contains	{water}
+S43	on	[table]
+O2	cup	0
+S43	empty
+S43	on	[table]
+O4	water	1
+S41	liquid
+S43	in	[bottle]
+M0	fill	<Assumed>
+O2	cup	0
+S43	contains	{water}
+S43	on	[table]
+O4	water	1
+S41	liquid
+S43	in	[cup]
+//
+O2	cup	1
+S43	contains	{water}
+S43	on	[table]
+O4	water	1
+S41	liquid
+S43	in	[cup]
+O4	bowl	0
+S43	empty
+S43	on	[table]
+M0	pour	<Assumed>
+O4	bowl	0
+S43	contains	{water}
+S43	on	[table]
+O4	water	1
+S41	liquid
+S43	in	[bowl]
+O2	cup	0
+S43	empty
+S43	on	[table]
+//

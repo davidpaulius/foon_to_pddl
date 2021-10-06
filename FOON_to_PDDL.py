@@ -166,7 +166,7 @@ def _create_PDDL_files(file_type=None):
 
 		# -- writing actions section of file:
 		for FU in fga.FOON_lvl3:
-			# -- old way: naming planning operators as "functional_unit_XXXX":
+	
 			pddl_file.write('(:action functional_unit_' + str(fga.FOON_lvl3.index(FU)) + '\n')
 
 			# -- list of objects that should be ignored when repeating predicates from preconditions:

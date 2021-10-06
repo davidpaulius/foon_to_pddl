@@ -47,7 +47,7 @@ From a loaded subgraph, each functional unit is translated into _planning operat
 
 This is done with the following steps:
 
-1. Take the name of an object node and set that to the current object in focus’s name (denoted as ```<focus_object>```).
+1. Take the name of an object node and set that to the current object in focusï¿½s name (denoted as ```<focus_object>```).
 
 2. Parse through all of the states of the object node, taking note of the following:
 
@@ -55,7 +55,7 @@ This is done with the following steps:
 
 	-- If a node has a physical state that cannot be described with object-centered predicates but which is relevant to the action (based on one's requirements), then create a predicate for that state. Examples of such states are ```whole```, ```chopped```, and ```mixed```. Many others exist in FOON.
 
-3. If there is no indication of a spatial/geometric relation state, then assume that the object is on the table and the table is under the object (i.e., ```(on table <focus_object>)``` and ```(under <focus_object> table)```).
+3. If there is no indication of a spatial/geometric relation state, then assume that the object is on the working surface and the surface is under the object (i.e., ```(on table <focus_object>)``` and ```(under <focus_object> table)```).
 
 Objects were assumed to be constants (i.e., only one instance of each object), but multiple instances of objects could be considered. However, this is not native to FOON.
 

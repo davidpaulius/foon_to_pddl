@@ -1,29 +1,77 @@
-# README #
+# FOON2PDDL (FOON\_to\_PDDL.py) #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This code repository contains Python scripts that are designed for files from the [FOON](https://www.foonets.com) (short for the **functional object-oriented network**) dataset.
 
-### What is this repository for? ###
+This requires code (specifically the ```FOON_graph_analyzer.py``` and ```FOON_classes.py``` files) from the FOON\_API repository, which can be found [here](https://bitbucket.org/davidpaulius/foon_api/src/master/).
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+---
 
-### How do I get set up? ###
+# License
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+>    This program is free software: you can redistribute it and/or modify
+>    it under the terms of the GNU General Public License as published by
+>    the Free Software Foundation, either version 3 of the License, or
+>    (at your option) any later version.
+>
+>    This program is distributed in the hope that it will be useful,
+>    but WITHOUT ANY WARRANTY; without even the implied warranty of
+>    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+>    GNU General Public License for more details.
+>
+>    You should have received a copy of the GNU General Public License
+>    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-### Contribution guidelines ###
+---
 
-* Writing tests
-* Code review
-* Other guidelines
+# Running the FOON\_to\_PDDL.py script
 
-### Who do I talk to? ###
+To run this code, simply use the following line in your terminal or command line:
+```
+>> python FOON_to_PDDL.py --file='example.txt' [ --type=1/2] [--help]
+```
 
-* Repo owner or admin
-* Other community or team contact
+Where ```example.txt``` in ```--file'example.txt'``` is the name of the text file containing the FOON graph description. 
+
+There is an optional parameter ```--type```, which is used to only produce a single file (either domain or problem). The parameter ```--type``` takes a value of either ```1``` (domain) or ```2``` (problem). 
+
+---
+
+# What is happening under the hood?
+
+A FOON subgraph file describes a cooking procedure in the form of a bipartite graph (meaning it has two types of nodes).
+The FOON graph analyzer (or FGA) (found in the FOON_API repository) is used to load a graph from a subgraph file.
+
+### Translating a FOON graph to a FOON domain file
+
+From the loaded graph, each functional unit is translated into a planning operator (defined as ```:action```). The input nodes are used to define the preconditions (defined as ```:preconditions```) and the output nodes are used to define the effects of the action (defined as ```:effects```). 
+
+This is done with the following steps:
+
+1. Take the name of an object node and set that to the current object in focus’s name (denoted as ```<focus_object>```).
+
+2. Parse through all of the states of the object node, taking note of the following:
+
+	-- If a node has some spatial/geometric relation state to another object (e.g. ```in [bowl]```), then the relation and the relative object are taken to produce the predicate (e.g. ```(in bowl <focus_object>)```). This is done for relations ```in```, ```on```, and ```under```. Please refer to [Agostini et al.](https://arxiv.org/abs/2007.08251) for more details on object-centered predicates.
+
+	-- If a node has a physical state that cannot be described with object-centered predicates but which is relevant to the action (based on one's requirements), then create a predicate for that state. Examples of such states are ```whole```, ```chopped```, and ```mixed```.
+
+3. If there is no indication of a spatial/geometric relation state, then assume that the object is on the table and the table is under the object (i.e., ```(on table <focus_object>)``` and ```(under <focus_object> table)```).
+
+Objects were assumed to be constants, but multiple instances of objects could be considered. However, this is not native to FOON.
+
+### Translating a FOON graph to a FOON problem file
+The ```:init``` section of the problem file considers all starting nodes in the FOON file. Starting nodes are those nodes that are never seen as output nodes. This carries the assumption that these objects are in their basic or natural state. All of these nodes are identified using the FGA (```fga._identifyKitchenItems()```). For each node, the same rules as above are applied to create predicates.
+
+---
+
+# FOON Graphs for Translation
+
+There are two examples provided in this repository: ```FOON-pour_water.txt``` and ```FOON-0076-bloody_mary.txt``` (which is a simplified version of the version found in the FOON dataset).
+
+Other graphs can also be downloaded in the FOON\_API repository or on the [FOON website](http://foonets.com/foon_subgraphs/subgraphs/).
+
+---
+
+### Need Assistance? Have Questions about our Papers?
+
+Please contact the main developer David Paulius at <davidpaulius@usf.edu> or <david.paulius@tum.de>.

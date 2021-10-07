@@ -91,7 +91,7 @@ def _create_PDDL_files(file_type=None):
 	state_types = ['whole', 'diced', 'chopped', 'sliced', 'mixed']
 	
 	# -- objects where they "contain" items on top of them rather than inside (i.e., they will have "air" on top):
-	surface_objects = ['pizza pan]
+	surface_objects = ['pizza pan', 'plate']
 
 	if not FOON_subgraph_file:
 		FOON_subgraph_file = input('-- Enter file name and path to the FOON graph to be converted: > ')

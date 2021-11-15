@@ -1,6 +1,6 @@
 # FOON-to-PDDL (FOON\_to\_PDDL.py) #
 
-This code repository contains Python scripts that are designed for files from the [**FOON**](https://www.foonets.com) (short for the **functional object-oriented network**) dataset.
+This code repository contains Python scripts that are designed to convert files from the [**FOON**](https://www.foonets.com) (short for the **functional object-oriented network**) dataset into [**PDDL**](https://planning.wiki/) problem and domain files.
 
 This requires code (specifically the ```FOON_graph_analyzer.py``` and ```FOON_classes.py``` files) from the **FOON\_API** repository, which can be found [here](https://bitbucket.org/davidpaulius/foon_api/src/master/).
 
@@ -64,6 +64,12 @@ The ```:init``` section of the problem file considers all _starting nodes_ in th
 
 ---
 
+# Using the FOON domain and problem files
+
+Once the files have been generated, you can use any off-the-shelf planner (e.g., [PDDL4J](https://github.com/pellierd/pddl4j) or [Fast-Downward](https://github.com/aibasel/downward)) to see if a plan can be generated. If a plan cannot be found with any FOON graph file that you are testing, be sure to carefully review the problem file for any rogue predicates that are not being satisfied in planning.
+
+---
+
 # FOON Graphs for Translation
 
 There are two examples provided in this repository: ```FOON-pour_water.txt``` and ```FOON-0076-bloody_mary.txt``` (which is a simplified version of the version found in the FOON dataset).
@@ -74,4 +80,4 @@ Other graphs can also be downloaded from the **FOON\_API** repository or the [FO
 
 ### Need Assistance? Have Questions about our Papers?
 
-Please contact the main developer David Paulius at <davidpaulius@usf.edu> or <david.paulius@tum.de>.
+Please contact the main developer David Paulius at <davidpaulius@usf.edu> or <dpaulius@cs.brown.edu>.

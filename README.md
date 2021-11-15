@@ -6,7 +6,7 @@ This requires code (specifically the ```FOON_graph_analyzer.py``` and ```FOON_cl
 
 ---
 
-# License
+## License
 
 >    This program is free software: you can redistribute it and/or modify
 >    it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ There is an optional parameter ```--type```, which is used to only produce a sin
 
 ---
 
-# What is happening under the hood?
+## What is happening under the hood?
 
 A FOON subgraph file describes a cooking procedure in the form of a bipartite graph (meaning it has two types of nodes).
 The _FOON graph analyzer_ (or _FGA_) (found in the **FOON_API** repository) is used to load a graph from a subgraph file.
@@ -64,13 +64,13 @@ The ```:init``` section of the problem file considers all _starting nodes_ in th
 
 ---
 
-# Using the FOON domain and problem files
+## Using the FOON domain and problem files
 
 Once the files have been generated, you can use any off-the-shelf planner (e.g., [PDDL4J](https://github.com/pellierd/pddl4j) or [Fast-Downward](https://github.com/aibasel/downward)) to see if a plan can be generated. If a plan cannot be found with any FOON graph file that you are testing, be sure to carefully review the problem file for any rogue predicates that are not being satisfied in planning.
 
 ---
 
-# FOON Graphs for Translation
+## FOON Graphs for Translation
 
 There are two examples provided in this repository: ```FOON-pour_water.txt``` and ```FOON-0076-bloody_mary.txt``` (which is a simplified version of the version found in the FOON dataset).
 
@@ -78,6 +78,6 @@ Other graphs can also be downloaded from the **FOON\_API** repository or the [FO
 
 ---
 
-### Need Assistance? Have Questions about our Papers?
+## Need Assistance? Have Questions about our Papers?
 
 Please contact the main developer David Paulius at <davidpaulius@usf.edu> or <dpaulius@cs.brown.edu>.

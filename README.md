@@ -4,7 +4,7 @@ This code repository contains Python scripts that are designed to convert files 
 
 This requires code (specifically the ```FOON_graph_analyzer.py``` and ```FOON_classes.py``` files) from the **FOON\_API** repository, which can be found [here](https://bitbucket.org/davidpaulius/foon_api/src/master/).
 
----
+
 
 ## License
 
@@ -21,9 +21,8 @@ This requires code (specifically the ```FOON_graph_analyzer.py``` and ```FOON_cl
 >    You should have received a copy of the GNU General Public License
 >    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
----
 
-# Running the FOON\_to\_PDDL.py script
+## Running the FOON\_to\_PDDL.py script
 
 To run this code, simply use the following line in your terminal or command line:
 ```
@@ -34,7 +33,7 @@ Where ```example.txt``` in ```--file'example.txt'``` is the name of the text fil
 
 There is an optional parameter ```--type```, which is used to only produce a single file (either domain or problem). The parameter ```--type``` takes a value of either ```1``` (domain) or ```2``` (problem). 
 
----
+
 
 ## What is happening under the hood?
 
@@ -62,21 +61,18 @@ Objects were assumed to be constants (i.e., only one instance of each object), b
 ### Translating a FOON graph to a FOON problem file
 The ```:init``` section of the problem file considers all _starting nodes_ in the FOON file. *Starting nodes* are those nodes that are never seen as output nodes. This carries the assumption that these objects are in their basic or natural state. All of these nodes are identified using a function from the FGA (```fga._identifyKitchenItems()```). For each node, the same rules as above are applied to create predicates.
 
----
+
 
 ## Using the FOON domain and problem files
 
 Once the files have been generated, you can use any off-the-shelf planner (e.g., [PDDL4J](https://github.com/pellierd/pddl4j) or [Fast-Downward](https://github.com/aibasel/downward)) to see if a plan can be generated. If a plan cannot be found with any FOON graph file that you are testing, be sure to carefully review the problem file for any rogue predicates that are not being satisfied in planning.
 
----
 
 ## FOON Graphs for Translation
 
 There are two examples provided in this repository: ```FOON-pour_water.txt``` and ```FOON-0076-bloody_mary.txt``` (which is a simplified version of the version found in the FOON dataset).
 
 Other graphs can also be downloaded from the **FOON\_API** repository or the [FOON website](http://foonets.com/foon_subgraphs/subgraphs/).
-
----
 
 ## Need Assistance? Have Questions about our Papers?
 

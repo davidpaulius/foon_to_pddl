@@ -26,7 +26,7 @@ which can be found [here](https://bitbucket.org/davidpaulius/foon_api/src/master
 
 ## Running the FOON\_to\_PDDL.py script
 
-To run this code, simply use the following line in your terminal or command line:
+To run this code (using Python 3), simply use the following line in your terminal or command line:
 ```
 >> python FOON_to_PDDL.py --file='example.txt' [ --type=1/2] [--help]
 ```

@@ -1,8 +1,15 @@
-#################################################################################################################################
-# 											FOON to PDDL (FOON_to_PDDL.py) 														#
-# 								--------------------------------------------------------------------							#
-# 								Written by David Paulius (davidpaulius@usf.edu / david.paulius@tum.de) 							#
-#################################################################################################################################
+'''
+FOON_to_PDDL (Translator from FOON to PDDL):
+-------------------------------------------
+-- Written and maintained by: 
+	* David Paulius (dpaulius@cs.brown.edu / davidpaulius@tum.de)
+
+NOTE: If using this program and/or annotations provided by our lab, please kindly cite our papers
+	so that others may find our work:
+* Paulius et al. 2016 - https://ieeexplore.ieee.org/abstract/document/7759413/
+* Paulius et al. 2018 - https://ieeexplore.ieee.org/abstract/document/8460200/
+
+'''
 
 ### License
 # This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -13,6 +20,8 @@ from __future__ import print_function
 import sys, os, getopt
 
 from numpy.lib.arraysetops import isin
+
+sys.path.append('FOON_scripts')
 
 try:
 	import FOON_graph_analyzer as fga
@@ -135,9 +144,7 @@ def _create_PDDL_files(file_type=None):
 		pddl_file.write('(:constants\n')
 		pddl_file.write('\t; objects used in Agostini et al. 2021 - https://arxiv.org/abs/2007.08251\n')
 		pddl_file.write('\t' + 'air' + ' - object\n')
-		pddl_file.write('\t' + 'tablel' + ' - object\n')
-		pddl_file.write('\t' + 'tablem' + ' - object\n')
-		pddl_file.write('\t' + 'tabler' + ' - object\n')
+		pddl_file.write('\t' + 'table' + ' - object\n')
 		pddl_file.write('\n\t; objects from provided FOON subgraph:\n')
 		for N in object_types:
 			pddl_file.write('\t' + str(_reviseObjectLabels(N)) + ' - object\n')
@@ -521,8 +528,10 @@ def _create_PDDL_files(file_type=None):
 		pddl_file.close()
 	#enddef
 
+	
+	# -- if using multiple parts of the table, you can uncomment and use the following:
 	#table_positions = ['tablel', 'tablem', 'tabler']
-	table_positions = ['tablel']
+	table_positions = ['table']
 
 	FOON_domain_file = os.path.splitext(FOON_subgraph_file)[0] + '_domain.pddl'
 	FOON_problem_file = os.path.splitext(FOON_subgraph_file)[0] + '_problem.pddl'

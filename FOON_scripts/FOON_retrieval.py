@@ -1,15 +1,22 @@
-###############################################################################################################################
-# 						FOON_retrieval (FOON_retrieval.py) 							#
-# 				--------------------------------------------------------------------					#
-# 		Written and Maintained by: David Paulius (davidpaulius@usf.edu) and Md Sadman Sakib (mdsadman@usf.edu)		#
-# 						RPAL (University of South Florida) 							#
-###############################################################################################################################
+'''
+FOON: Retrieval Methods (FOON_retrieval):
+		(last updated: 6th December, 2021):
+-------------------------------------------
+-- Written and maintained by: 
+	* Md Sadman Sakib (mdsadman@usf.edu)
+	* David Paulius (davidpaulius@usf.edu / dpaulius@cs.brown.edu)
 
+NOTE: If using this program and/or annotations provided by our lab, please kindly cite our papers
+	so that others may find our work:
+* Paulius et al. 2016 - https://ieeexplore.ieee.org/abstract/document/7759413/
+* Paulius et al. 2018 - https://ieeexplore.ieee.org/abstract/document/8460200/
+
+'''
 import collections, time, getopt, ast, tqdm, itertools as IT, os, sys
 
 import FOON_classes as FOON
 
-last_updated = '10th November, 2021'
+last_updated = '6th December, 2021'
 
 ###############################################################################################################################
 

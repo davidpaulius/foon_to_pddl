@@ -318,7 +318,7 @@ def _loadKitchenList(file='FOON-input_only_nodes.txt'):
 	return kitchen
 #enddef
 
-def _isStartingNode(O):
+def _isStartingNode(O, ):
 	# NOTE: simple function to evaluate whether a certain node is a starting node:
 
 	# -- one surefire way: check the output node to functional unit map; 
@@ -327,6 +327,10 @@ def _isStartingNode(O):
 	if not procedures:
 		return True
 
+	return False
+
+
+def _isBaseState(O):
 	# -- another possibility: what if this node has starting node states?
 	#	(e.g. 'empty', 'off', 'clean') 
 	count_initial_states = 0
@@ -1733,7 +1737,7 @@ def _findAllPaths(goalType, goalState, hierarchy_level=3, check_ingredients=True
 				for _input in precondition_unit.getInputList():
 
 					# -- check if this node is considered to be a starting node:
-					if _isStartingNode(_input):
+					if _isStartingNode(_input) or _isBaseState(_input):
 						if verbose:
 							_input.print_functions[2]()
 						continue

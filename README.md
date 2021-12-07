@@ -1,6 +1,6 @@
 # FOON-to-PDDL (FOON\_to\_PDDL.py) #
 
-This code repository contains Python scripts that are designed to convert files from the [**FOON**](https://www.foonets.com) (short for the **functional object-oriented network**) dataset into [**PDDL**](https://planning.wiki/) problem and domain files.
+This code repository contains Python scripts that are designed to convert files from the [**FOON**](http://www.foonets.com) (short for the **functional object-oriented network**) dataset into [**PDDL**](https://planning.wiki/) problem and domain files.
 
 This requires code (specifically the ```FOON_graph_analyzer.py```, ```FOON_retrieval.py```, and ```FOON_classes.py``` files) from the **FOON\_API** repository, which can be found in this repository.
 
@@ -82,6 +82,12 @@ There are two examples provided in this repository: ```FOON-pour_water.txt``` (a
 
 Other graphs can also be downloaded from the **FOON\_API** repository or the [FOON website](http://foonets.com/foon_subgraphs/subgraphs/). It is much easier to start with a regular FOON file and then edit it rather than writing one from scratch due to the precise formatting required.
 
+
+### Visualizing FOON Graphs
+
+If you would like to visualize graphs (such as in ![FOON-pour_water.pdf](https://github.com/davidpaulius/foon_pddl/files/7670444/FOON-pour_water.pdf?raw=true)), you can use the [FOON_view](https://github.com/davidpaulius/foon_view) tool. You can also access the tool directly through the FOON website [here](http://foonets.com/FOON_view/visualizer.html).
+
 ## Need Assistance? Have Questions about Papers?
 
 Please contact the main developer David Paulius at <davidpaulius@usf.edu> or <dpaulius@cs.brown.edu>.
+

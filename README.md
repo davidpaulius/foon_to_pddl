@@ -75,6 +75,13 @@ For the translation of each node, the same rules as above are applied to create 
 
 Once the files have been generated, you can use any off-the-shelf planner (e.g., [PDDL4J](https://github.com/pellierd/pddl4j) or [Fast-Downward](https://github.com/aibasel/downward)) to see if a plan can be generated. If a plan cannot be found with any FOON graph file that you are testing, be sure to carefully review the problem file for any rogue predicates that are not being satisfied in planning.
 
+For example, with Fast-Downward, you can use the following command:
+```
+>> python path/to/fast-downward.py --alias seq-opt-lmcut <name_of_domain_file>.pddl <name_of_problem_file>.pddl
+```
+
+You can read more about what the ```--alias``` argument flag means [here](https://www.fast-downward.org/IpcPlanners). For now, just know that it is one type of searching approach that is available in the Fast-Downward planner.
+
 
 ## FOON Graphs for Translation
 
@@ -85,9 +92,13 @@ Other graphs can also be downloaded from the **FOON\_API** repository or the [FO
 
 ### Visualizing FOON Graphs
 
-If you would like to visualize graphs (such as in ![FOON-pour_water.pdf](https://github.com/davidpaulius/foon_pddl/files/7670444/FOON-pour_water.pdf?raw=true)), you can use the [FOON_view](https://github.com/davidpaulius/foon_view) tool. You can also access the tool directly through the FOON website [here](http://foonets.com/FOON_view/visualizer.html).
+<img src="https://user-images.githubusercontent.com/11097628/145078748-1429b4f1-6300-43fa-a4f1-14a18885ae63.png" alt="drawing" width="400"/>
+
+If you would like to visualize graphs (such as above), you can use the [FOON_view](https://github.com/davidpaulius/foon_view) tool. You can also access the tool directly through the FOON website [here](http://foonets.com/FOON_view/visualizer.html).
+
 
 ## Need Assistance? Have Questions about Papers?
 
 Please contact the main developer David Paulius at <davidpaulius@usf.edu> or <dpaulius@cs.brown.edu>.
+
 

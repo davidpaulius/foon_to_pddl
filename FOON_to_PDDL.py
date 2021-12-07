@@ -170,35 +170,35 @@ def _create_PDDL_files(file_type=None):
 
 		pddl_file.write('\n')
 
-
 		# -- writing actions section of file:
 		for FU in fga.FOON_lvl3:
 	
-			pddl_file.write('(:action functional_unit_' + str(fga.FOON_lvl3.index(FU)) + '\n')
+			# -- if you want things named as "functional_unit_X", then uncomment the following:
+			#pddl_file.write('(:action functional_unit_' + str(fga.FOON_lvl3.index(FU)) + '\n')
 
 			# -- list of objects that should be ignored when repeating predicates from preconditions:
 			objects_to_ignore = []
 
 			# -- creating name for planning operators (PO) based on FOON action label and objects:
-			#PO_name = str(FU.getMotion().getMotionLabel())
-			#for N in range(FU.getNumberOfInputs()):
-			#	# -- finding the active or focal object based on the action label:
-			#	focal_object = ''
-			#	if not FU.getInputNodes()[N].hasIngredients():
-			#		if PO_name in ['pick-and-place', 'pour', 'sprinkle', 'insert'] and FU.getInputDescriptor(N) == 1:
-			#			# -- 'pick-and-place' and 'pour' are done on an object with motion descriptor 1:
-			#			focal_object = FU.getInputNodes()[N].getObjectLabel()
-			#		elif PO_name in ['slice', 'dice', 'chop', 'cut', 'scoop', 'scoop and pour'] and FU.getInputDescriptor(N) == 0:
-			#			# -- object being acted upon with the above labels will have a motion descriptor 0:
-			#			focal_object = FU.getInputNodes()[N].getObjectLabel()
-			#
-			#	elif PO_name == 'mix' or PO_name == 'stir':
-			#		focal_object = 'ingredients'
-			#	if focal_object:
-			#		PO_name += '_' + focal_object
-			#		break
-			#
-			#pddl_file.write('(:action ' + _reviseObjectLabels(PO_name) + '_' + str(fga.FOON_lvl3.index(FU)) + '\n')
+			PO_name = str(FU.getMotion().getMotionLabel())
+			for N in range(FU.getNumberOfInputs()):
+				# -- finding the active or focal object based on the action label:
+				focal_object = ''
+				if not FU.getInputNodes()[N].hasIngredients():
+					if PO_name in ['pick-and-place', 'pour', 'sprinkle', 'insert'] and FU.getInputDescriptor(N) == 1:
+						# -- 'pick-and-place' and 'pour' are done on an object with motion descriptor 1:
+						focal_object = FU.getInputNodes()[N].getObjectLabel()
+					elif PO_name in ['slice', 'dice', 'chop', 'cut', 'scoop', 'scoop and pour'] and FU.getInputDescriptor(N) == 0:
+						# -- object being acted upon with the above labels will have a motion descriptor 0:
+						focal_object = FU.getInputNodes()[N].getObjectLabel()
+			
+				elif PO_name == 'mix' or PO_name == 'stir':
+					focal_object = 'ingredients'
+				if focal_object:
+					PO_name += '_' + focal_object
+					break
+			
+			pddl_file.write('(:action ' + _reviseObjectLabels(PO_name) + '_' + str(fga.FOON_lvl3.index(FU)) + '\n')
 
 			pddl_file.write('\t; description: <' + FU.getWord2VecSentence() + '>\n')
 
@@ -536,11 +536,13 @@ def _create_PDDL_files(file_type=None):
 	FOON_domain_file = os.path.splitext(FOON_subgraph_file)[0] + '_domain.pddl'
 	FOON_problem_file = os.path.splitext(FOON_subgraph_file)[0] + '_problem.pddl'
 
+	# -- checking for the argument for making either domain (1) or problem (2) file:
 	if file_type == 1:
 		_create_domain_file()
 	elif file_type == 2:
 		_create_problem_file()
 	else:
+		# -- by default, create both at the same time:
 		_create_domain_file()
 		print()
 		_create_problem_file()

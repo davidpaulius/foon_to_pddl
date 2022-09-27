@@ -23,6 +23,7 @@ which can be found [here](https://bitbucket.org/davidpaulius/foon_api/src/master
 >    You should have received a copy of the GNU General Public License
 >    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+---
 
 ## Running the FOON\_to\_PDDL.py script
 
@@ -82,6 +83,7 @@ For example, with Fast-Downward, you can use the following command:
 
 You can read more about what the ```--alias``` argument flag means [here](https://www.fast-downward.org/IpcPlanners). For now, just know that it is one type of searching approach that is available in the Fast-Downward planner.
 
+---
 
 ## FOON Graphs for Translation
 
@@ -89,6 +91,7 @@ There are two examples provided in this repository: ```FOON-pour_water.txt``` (a
 
 Other graphs can also be downloaded from the **FOON\_API** repository or the [FOON website](http://foonets.com/foon_subgraphs/subgraphs/). It is much easier to start with a regular FOON file and then edit it rather than writing one from scratch due to the precise formatting required.
 
+---
 
 ### Visualizing FOON Graphs
 
@@ -96,6 +99,7 @@ Other graphs can also be downloaded from the **FOON\_API** repository or the [FO
 
 If you would like to visualize graphs (such as above), you can use the [FOON_view](https://github.com/davidpaulius/foon_view) tool. You can also access the tool directly through the FOON website [here](http://foonets.com/FOON_view/visualizer.html).
 
+---
 
 ## Need Assistance? Have Questions about Papers?
 

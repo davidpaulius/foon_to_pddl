@@ -91,8 +91,6 @@ There are two examples provided in this repository: ```FOON-pour_water.txt``` (a
 
 Other graphs can also be downloaded from the **FOON\_API** repository or the [FOON website](http://foonets.com/foon_subgraphs/subgraphs/). It is much easier to start with a regular FOON file and then edit it rather than writing one from scratch due to the precise formatting required.
 
----
-
 ### Visualizing FOON Graphs
 
 <img src="https://user-images.githubusercontent.com/11097628/145078748-1429b4f1-6300-43fa-a4f1-14a18885ae63.png" alt="drawing" width="400"/>

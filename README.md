@@ -1,4 +1,4 @@
-# FOON-to-PDDL (FOON\_to\_PDDL.py) #
+# foon_to_pddl #
 
 This code repository contains Python scripts that are designed to convert files from the [**FOON**](http://www.foonets.com) (short for the **functional object-oriented network**) dataset into [**PDDL**](https://planning.wiki/) problem and domain files.
 

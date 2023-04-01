@@ -26,7 +26,7 @@ import sys, os, getopt
 last_updated = '25th October, 2022'
 
 try:
-    import FOON_graph_analyser as fga
+    import FOON_graph_analyzer as fga
 except ImportError:
     print(" -- ERROR: Missing 'FOON_graph_analyzer.py'!")
     print("\t-- Download here: https://bitbucket.org/davidpaulius/foon_api/src/master/")

@@ -30,7 +30,7 @@ path_to_FOON_code = './foon_api/'
 # NOTE: we need to import some files from the FOON API directory:
 if path_to_FOON_code not in sys.path:
     try:
-        import FOON_graph_analyzer as fga
+        import FOON_graph_analyser as fga
     except ImportError:
         print(" -- ERROR: Missing 'FOON_graph_analyzer.py'!")
         print("\t-- Download here: https://bitbucket.org/davidpaulius/foon_api/src/master/")

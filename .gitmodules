@@ -1,3 +1,5 @@
 [submodule "foon_api"]
 	path = foon_api
 	url = https://github.com/davidpaulius/foon_api
+	branch = master
+

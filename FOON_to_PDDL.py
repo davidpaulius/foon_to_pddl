@@ -21,19 +21,25 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 '''
 
-import sys, os, getopt
+import sys
+import os
+import getopt
 
-last_updated = '25th October, 2022'
+last_updated = '31st March, 2023'
 
-path_to_FOON_code = './foon_api/'
+path_to_FOON_code = os.path.join(os.path.dirname(__file__), './foon_api/')
 
 # NOTE: we need to import some files from the FOON API directory:
 if path_to_FOON_code not in sys.path:
+    # -- add the directory to the FOON API scripts to the current path:
+    sys.path.append(path_to_FOON_code)
+
+    # -- attempt to import the FGA script:
     try:
         import FOON_graph_analyser as fga
     except ImportError:
         print(" -- ERROR: Missing 'FOON_graph_analyzer.py'!")
-        print("\t-- Download here: https://bitbucket.org/davidpaulius/foon_api/src/master/")
+        print("\t-- Download here: https://github.com/davidpaulius/foon_api")
         sys.exit()
     #end
 #endif

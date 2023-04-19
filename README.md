@@ -1,16 +1,11 @@
 # foon_to_pddl: Convert FOON graphs to PDDL definitions! #
 
-**NOTE:** This repository is based on the paper ["Long-Horizon Planning with Functional Object-Oriented Networks"](https://arxiv.org/abs/2207.05800).
+**NOTE:** This repository is based on the paper ["Long-Horizon Planning with Functional Object-Oriented Networks"](https://arxiv.org/abs/2207.05800). 
 - Check out how this code has been applied to task planning in our [recent work](https://davidpaulius.github.io/foon-lhpe)!
 
-## Summary 
-This code repository contains Python scripts that are designed to convert files from the [**FOON**](http://www.foonets.com) (short for the **functional object-oriented network**) dataset into [**PDDL**](https://planning.wiki/) problem and domain files.
+This repository contains Python scripts that are designed to convert files from the [**FOON**](http://www.foonets.com) (short for the **functional object-oriented network**) dataset into [**PDDL**](https://planning.wiki/) problem and domain files.
 
-This requires code (specifically the ```FOON_graph_analyzer.py```, ```FOON_retrieval.py```, and ```FOON_classes.py``` files) from the **FOON\_API** repository, which can be found in this repository under the **FOON_scripts** folder.
-
-<!---
-which can be found [here](https://bitbucket.org/davidpaulius/foon_api/src/master/).
--->
+This requires components (specifically the ```FOON_graph_analyzer.py```, ```FOON_retrieval.py```, and ```FOON_classes.py``` files) from the [**FOON API**](https://github.com/davidpaulius/foon_api) repository, which can be found in this repository under the **FOON_scripts** folder.
 
 ## License
 
@@ -40,7 +35,7 @@ Where ```example.txt``` in ```--file'example.txt'``` is the name of the text fil
 
 There is an optional parameter ```--type```, which is used to only produce a single file (either domain or problem). The parameter ```--type``` takes a value of either ```1``` (domain) or ```2``` (problem). 
 
-
+---
 
 ## What is happening under the hood?
 
@@ -57,24 +52,25 @@ This is done with the following steps:
 
 2. Parse through all of the states of the object node, taking note of the following:
 
-	-- If a node has some spatial/geometric relation state to another object (e.g. ```in [bowl]```), then the relation and the relative object are taken to produce the predicate (e.g. ```(in bowl <focus_object>)```). This is done for relations ```in```, ```on```, and ```under```. Please refer to [Agostini et al.](https://arxiv.org/abs/2007.08251) for more details on object-centered predicates.
+	- If a node has some spatial/geometric relation state to another object (e.g. ```in [bowl]```), then the relation and the relative object are taken to produce the predicate (e.g. ```(in bowl <focus_object>)```). This is done for relations ```in```, ```on```, and ```under```. 
+		- Please refer to [Agostini et al. 2020a](https://ieeexplore.ieee.org/abstract/document/9140305) and [Agostini et al. 2020b](https://arxiv.org/abs/2007.08251) for more details on object-centered predicates.
 	
-	-- Currently, the object-centered predicate relations such as ```left``` and ```right``` are not considered.
+	- Currently, the object-centered predicate relations such as ```left``` and ```right``` are not considered.
 
-	-- If a node has a physical state that cannot be described with object-centered predicates, but which is relevant to the action (based on one's requirements), then create a predicate for that state. Examples of such states are ```whole```, ```chopped```, and ```mixed```. Many others exist in FOON, and these are based on states as discussed in [Jelodar et al.](https://arxiv.org/abs/1805.06956).
+	- If a node has a physical state that cannot be described with object-centered predicates, but which is relevant to the action (based on one's requirements), then create a predicate for that state. Examples of such states are ```whole```, ```chopped```, and ```mixed```. Many others exist in FOON, and these are based on states as discussed in [Jelodar et al.](https://arxiv.org/abs/1805.06956).
 	
-	-- Other states can be added by simply making modifications to the ```FOON_to_PDDL.py``` script and adding new state terms for parsing.
+	- Other states can be added by simply making modifications to the ```FOON_to_PDDL.py``` script and adding new state terms for parsing.
 
 3. If there is no indication of a spatial/geometric relation state, then assume that the object is on the working surface and the surface is under the object (i.e., ```(on table <focus_object>)``` and ```(under <focus_object> table)```).
 
-Objects were assumed to be constants (i.e., only one instance of each object), but multiple instances of objects could be considered. However, this is not native to FOON. Therefore, further modifications would be required for problems such as object grounding.
+	- Objects were assumed to be constants (i.e., only one instance of each object), but multiple instances of objects could be considered. However, this is not native to FOON. Therefore, further modifications would be required for problems such as object grounding.
 
 ### Translating a FOON graph to a FOON problem file
 The ```:init``` section of the problem file considers all _starting nodes_ in the FOON file. *Starting nodes* are those nodes that are never seen as output nodes. This carries the assumption that these objects are in their _basic or natural_ state. All of these nodes are identified using a function from the FGA (```fga._identifyKitchenItems()```), which simply uses a dictionary built from the entire graph to identify such nodes. 
 
 For the translation of each node, the same rules as above are applied to create appropriate predicates.
 
-
+---
 
 ## Using the FOON domain and problem files
 
@@ -103,8 +99,13 @@ If you would like to visualize graphs (such as above), you can use the [FOON_vie
 
 ---
 
-## Need Assistance? Have Questions about Papers?
+## How to Cite our Work?
 
-Please contact the main developer David Paulius at <davidpaulius@usf.edu> or <dpaulius@cs.brown.edu>.
+If you found this code useful for your work, please help others find this work by citing the following paper:
 
+> D. Paulius*, A. Agostini*, and D. Lee, "Long-Horizon Planning and Execution with Functional Object-Oriented Networks," in arXiv preprint arXiv:2207.05800, 2023 (In Review).
+
+### Need Assistance? Have Questions about Papers?
+
+Please contact the main developer David Paulius at **dpaulius AT cs DOT brown DOT edu**.
 

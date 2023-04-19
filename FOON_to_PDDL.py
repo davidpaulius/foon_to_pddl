@@ -25,13 +25,18 @@ import sys, os, getopt
 
 last_updated = '25th October, 2022'
 
-try:
-    import FOON_graph_analyser as fga
-except ImportError:
-    print(" -- ERROR: Missing 'FOON_graph_analyser.py'!")
-    print("\t-- Download here: https://github.com/davidpaulius/foon_api")
-    sys.exit()
-#end
+path_to_FOON_code = './foon_api/'
+
+# NOTE: we need to import some files from the FOON API directory:
+if path_to_FOON_code not in sys.path:
+    try:
+        import FOON_graph_analyzer as fga
+    except ImportError:
+        print(" -- ERROR: Missing 'FOON_graph_analyzer.py'!")
+        print("\t-- Download here: https://bitbucket.org/davidpaulius/foon_api/src/master/")
+        sys.exit()
+    #end
+#endif
 
 # -- variables for the FOON subgraph file name and a kitchen items file (optional - defaults to creating one with starting nodes)
 FOON_subgraph_file = None

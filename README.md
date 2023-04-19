@@ -1,5 +1,7 @@
 # foon_to_pddl: Convert FOONs to PDDL #
 
+**NOTE:** This repository is based on the paper ["Long-Horizon Planning with Functional Object-Oriented Networks"](https://arxiv.org/abs/2207.05800).
+
 This code repository contains Python scripts that are designed to convert files from the [**FOON**](http://www.foonets.com) (short for the **functional object-oriented network**) dataset into [**PDDL**](https://planning.wiki/) problem and domain files.
 
 This requires code (specifically the ```FOON_graph_analyzer.py```, ```FOON_retrieval.py```, and ```FOON_classes.py``` files) from the **FOON\_API** repository, which can be found in this repository under the **FOON_scripts** folder.

@@ -24,6 +24,13 @@ This requires components (specifically the ```FOON_graph_analyzer.py```, ```FOON
 
 ---
 
+## How to Download?
+
+To download this, use the following command (as this repository's code depends on certain submodules):
+
+```
+>> git clone https://github.com/davidpaulius/foon_to_pddl --recursive
+```
 ## Running the FOON\_to\_PDDL.py script
 
 To run this code (using Python 3), simply use the following line in your terminal or command line:

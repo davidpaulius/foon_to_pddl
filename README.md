@@ -35,12 +35,15 @@ To download this, use the following command (as this repository's code depends o
 
 To run this code (using Python 3), simply use the following line in your terminal or command line:
 ```
->> python FOON_to_PDDL.py --file='example.txt' [ --type=1/2] [--help]
+>> python FOON_to_PDDL.py --file='example.txt' [ --type=1/2] [--format='OCP'/'FOON'] [--help]
 ```
 
 Where ```example.txt``` in ```--file'example.txt'``` is the name of the text file containing the FOON graph description. 
 
-There is an optional parameter ```--type```, which is used to only produce a single file (either domain or problem). The parameter ```--type``` takes a value of either ```1``` (domain) or ```2``` (problem). 
+There are optional parameters: ```--type``` and ```--format```. 
+
+    - ```--type``` is used to only produce a single file (either domain or problem). The parameter ```--type``` takes a value of either ```1``` (domain) or ```2``` (problem); by default, this script will produce both domain and problem files.
+    - ```--format``` is used to define the PDDL format to generate. By default, it will produce files specifically designed for [TAMP using object-centered predicates](https://arxiv.org/abs/2207.05800) (this is akin to the ```'OCP'``` flag). If ```'FOON'``` is used as the format flag, then PDDL files will be generated that will replicate the graph search procedure known as [task tree retrieval](https://arxiv.org/abs/1902.01537).
 
 ---
 
@@ -57,7 +60,7 @@ This is done with the following steps:
 
 1. Take the name of an object node and set that to the name of the current object in focus (denoted as ```<focus_object>```).
 
-2. Parse through all of the states of the object node, taking note of the following:
+2. Parse through all of the states of the object node, taking note of the following details (if using ```'OCP'``` option described above):
 
 	- If a node has some spatial/geometric relation state to another object (e.g. ```in [bowl]```), then the relation and the relative object are taken to produce the predicate (e.g. ```(in bowl <focus_object>)```). This is done for relations ```in```, ```on```, and ```under```. 
 		- Please refer to [Agostini et al. 2020a](https://ieeexplore.ieee.org/abstract/document/9140305) and [Agostini et al. 2020b](https://arxiv.org/abs/2007.08251) for more details on object-centered predicates.
@@ -77,6 +80,8 @@ The ```:init``` section of the problem file considers all _starting nodes_ in th
 
 For the translation of each node, the same rules as above are applied to create appropriate predicates.
 
+**NOTE:** The goal predicates (described using ```:goal```) are identified by an exclamation mark character (i.e., ```!```) on the same line as an output object name's (i.e., ```O<id>\t<object name>\t<motion_identifier>\t!```). Without it, no goals will be printed automatically from this script.
+
 ---
 
 ## Using the FOON domain and problem files
@@ -89,6 +94,10 @@ For example, with Fast-Downward, you can use the following command:
 ```
 
 You can read more about what the ```--alias``` argument flag means [here](https://www.fast-downward.org/IpcPlanners). For now, just know that it is one type of searching approach that is available in the Fast-Downward planner.
+
+### Replicating FOON task tree retrieval 
+
+Using the ```--format='FOON'``` flag mentioned above, the above command will allow you to perform task tree retrieval, which will find a certain set of functional units that solves a given goal.
 
 ---
 

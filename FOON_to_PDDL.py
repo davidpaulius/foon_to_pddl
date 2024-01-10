@@ -25,7 +25,7 @@ import sys
 import os
 import getopt
 
-last_updated = '31st March, 2023'
+last_updated = '10th January, 2024'
 
 path_to_FOON_code = os.path.join(os.path.dirname(__file__), './foon_api/')
 

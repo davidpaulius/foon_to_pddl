@@ -55,15 +55,17 @@ ingredients_to_ignore = []
 # -- these are the names of the PDDL files that are created from the FOON file:
 FOON_domain_file, FOON_problem_file = None, None
 
-# NOTE: selection: this determines whether we are making object-centered files or regular FOON-based files.
-selection = 2
+# NOTE: pddl_format takes the value of either: 
+#   1. 'OCP' -- this will generate object-centered files for TAMP based on object-centered predicates
+#   2. 'FOON' -- this will generate PDDL files used to replicate task tree retrieval using the given FOON file.
+pddl_format = 'OCP'
 
 # NOTE: file_type (optional): this determines whether we are making only a domain file or only a problem file.
 #	if not provided, both files are made regardless.
 file_type = None
 
 def _check_args():
-    global FOON_subgraph_file, selection, file_type
+    global FOON_subgraph_file, pddl_format, file_type
     try:
         opts, _ = getopt.getopt(sys.argv[1:], 'fi:fo:ty:h', ['file=', 'format=', 'type=', 'help'])
 
@@ -74,8 +76,8 @@ def _check_args():
                 FOON_subgraph_file = str(arg)
 
             elif opt in ('-fo', '--format'):
-                selection = str(arg)
-                print('  -- Using ' + ('object-centered predicates' if selection == 'OCP' else 'FOON-based POs and objects') + '.')
+                pddl_format = str(arg)
+                print('  -- Using ' + ('object-centered predicates' if pddl_format == 'OCP' else 'FOON-based POs and objects') + '.')
 
             elif opt in ('-ty', '--type'):
                 file_type = int(arg)
@@ -107,7 +109,7 @@ def _convert_to_PDDL(option, file_type=None, ingredient_dropout=0):
     elif option == 'OCP':
         _create_PDDL_OCP(file_type, ingredient_dropout=ingredient_dropout)
     else:
-        pass
+        sys.exit(' -- ERROR: Invalid PDDL format provided! Use either \'OCP\' for TAMP format or \'FOON\' for task tree retrieval format.')
 #enddef
 
 
@@ -864,4 +866,4 @@ if __name__ == '__main__':
     print('\n< FOON_to_PDDL: converting FOON graph to PDDL code (last updated: ' + last_updated + ')>\n')
  
     _check_args()
-    _convert_to_PDDL(selection, file_type)
+    _convert_to_PDDL(pddl_format, file_type)

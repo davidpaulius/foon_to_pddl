@@ -118,8 +118,7 @@ If you would like to visualize graphs (such as above), you can use the [FOON_vie
 ## How to Cite our Work?
 
 If you found this code useful for your work, please help others find this work by citing the following paper:
-
-> D. Paulius*, A. Agostini*, and D. Lee, "Long-Horizon Planning and Execution with Functional Object-Oriented Networks," in arXiv preprint arXiv:2207.05800, 2023 (In Review).
+> D. Paulius*, A. Agostini* and D. Lee, "Long-Horizon Planning and Execution With Functional Object-Oriented Networks," in IEEE Robotics and Automation Letters, vol. 8, no. 8, pp. 4513-4520, Aug. 2023, doi: 10.1109/LRA.2023.3285510.
 
 ### Need Assistance? Have Questions about Papers?
 

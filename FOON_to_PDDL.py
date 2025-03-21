@@ -3,7 +3,7 @@ from __future__ import print_function
 '''
 FOON_to_PDDL (FOON to PDDL Translator):
 ----------------------------------------
--- Written and maintained by: 
+-- Written and maintained by:
     * David Paulius (dpaulius@cs.brown.edu / davidpaulius@tum.de)
 
 -- Special thanks to Alejandro Agostini (alejandro.agostini@uibk.ac.at) for references and help in legacy code,
@@ -24,8 +24,9 @@ You should have received a copy of the GNU General Public License along with thi
 import sys
 import os
 import getopt
+import random
 
-last_updated = '10th January, 2024'
+last_updated = '21st March, 2025'
 
 path_to_FOON_code = os.path.join(os.path.dirname(__file__), './foon_api/')
 
@@ -55,7 +56,7 @@ ingredients_to_ignore = []
 # -- these are the names of the PDDL files that are created from the FOON file:
 FOON_domain_file, FOON_problem_file = None, None
 
-# NOTE: pddl_format takes the value of either: 
+# NOTE: pddl_format takes the value of either:
 #   1. 'OCP' -- this will generate object-centered files for TAMP based on object-centered predicates
 #   2. 'FOON' -- this will generate PDDL files used to replicate task tree retrieval using the given FOON file.
 pddl_format = 'OCP'
@@ -139,7 +140,7 @@ def _create_PDDL_FOON(file_type=None):
         pddl_file.write('(define (domain universal_FOON)\n')
         pddl_file.write('\n')
         pddl_file.write('(:requirements :adl)\n')
-        
+
         pddl_file.write('\n')
 
         # -- at the macro level, we will only have types of "object":
@@ -197,7 +198,7 @@ def _create_PDDL_FOON(file_type=None):
             for N in FU.getOutputList():
                 pddl_file.write('\t\t(' + 'is_available ' + _reviseObjectLabels(N.getObjectKey()) + ')\n')
             pddl_file.write('\t)\n')
-        
+
             pddl_file.write(')\n')
 
             pddl_file.write('\n')
@@ -222,7 +223,7 @@ def _create_PDDL_FOON(file_type=None):
         #	1. Read the kitchen items / environment file that will usually be provided to the task tree retrieval algorithm.
         #		-- Each item is listed one by one, where they can be delineated by '//' or other tokens.
         #	2. Read an existing domain file to get all of the possible objects that could exist.
-        #	3. Write the kitchen items (as their respective object key) as objects that can possibly exist 
+        #	3. Write the kitchen items (as their respective object key) as objects that can possibly exist
 
         # -- read the objects available to us (i.e. the kitchen) using FGA _identifyKitchenItems function:
         kitchen_items = fga._identifyKitchenItems(FOON_inputs_file)
@@ -254,7 +255,7 @@ def _create_PDDL_FOON(file_type=None):
         # 	object_line = domain_lines[objects_starting_line].split(' - ')
         # 	pddl_file.write(object_line[0] + ' - ' + object_line[0].replace('\t', '') + '\n')
         # 	objects_starting_line += 1
-        
+
         # pddl_file.write(')\n')
 
         pddl_file.write('(:init' + '\n')
@@ -284,13 +285,11 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
     # NOTE: these functions are to convert the given subgraph to the object-centered predicate format
     #	as used in Agostini et al, 2021 - https://arxiv.org/abs/2007.08251
 
-    import random
-
     global FOON_subgraph_file, FOON_inputs_file, FOON_domain_file, FOON_problem_file, ingredients_to_ignore
 
     # -- these are the physical state of matter that we will care about when parsing FOON graphs:
     state_types = ['whole', 'diced', 'chopped', 'sliced', 'mixed', 'ground', 'juiced', 'spread']
-    
+
     # -- objects where they "contain" items on top of them rather than inside (i.e., they will have "air" on top):
     air_on_objects = ['plate', 'pizza pan', 'cutting board']
 
@@ -308,11 +307,11 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
         #		-- We will have to use an object key (using the FOON classes) to describe each object in a unique way.
         #	2. Second, extract each functional unit from the subgraph file; each of these will form our actions.
 
-        # -- check for all possible object (ingredients + utensils + containers) 
+        # -- check for all possible object (ingredients + utensils + containers)
         # 	and ingredient-only types:
         object_types = set()
 
-        for N in fga.FOON_nodes[2]:
+        for N in fga.FOON_nodes[-1]:
             if isinstance(N, fga.FOON.Object):
                 object_types.add(N.getObjectLabel())
                 # -- we will subtract the entire list from objects that have been containers:
@@ -323,7 +322,7 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
         object_types = sorted(list(object_types))
 
         if ingredient_dropout != 0:
-            # NOTE: the intuition here is to randomly drop a certain number of ingredients from 
+            # NOTE: the intuition here is to randomly drop a certain number of ingredients from
             #   preconditions of generated planning operators!
 
             # -- we will randomly decide on the number of ingredients to drop out, which could be either:
@@ -359,14 +358,14 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
             pddl_file.write('; NOTE: the following ingredients will be dropped:\n')
             pddl_file.write(';\t' + str(ingredients_to_ignore) + '\n')
 
-        # NOTE: use this to define a specific domain; otherwise, it's best to call everything 
+        # NOTE: use this to define a specific domain; otherwise, it's best to call everything
         #       the 'universal_FOON' domain:
         # pddl_file.write('(define (domain ' + str(os.path.splitext(FOON_subgraph_file)[0]) + ')\n')
 
         pddl_file.write('(define (domain universal_FOON)\n')
         pddl_file.write('\n')
         pddl_file.write('(:requirements :adl)\n')
-        
+
         pddl_file.write('\n')
 
         pddl_file.write('(:types \n')
@@ -400,7 +399,7 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
         pddl_file.write('\n')
 
         # -- some predicates are also state-based (driven by perception):
-        pddl_file.write('\t; physical state predicates (from FOON)\n')		
+        pddl_file.write('\t; physical state predicates (from FOON)\n')
         for S in state_types:
             pddl_file.write('\t(is-' + S + ' ?obj_1 - object)\n')
 
@@ -452,31 +451,43 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
 
                 # -- review all states in an object node:
                 for S in N.getStatesList():
-                    if S[1] in ['in', 'on', 'under']:
+                    if S[1] in ['in', 'on', 'under'] and bool(S[2]):
                         # -- get the corresponding labels:
-                        this_obj, relative_obj = str(_reviseObjectLabels(N.getObjectLabel())), str(_reviseObjectLabels(S[2]))
+                        oc_relation, this_obj, relative_obj = str(S[1]), str(_reviseObjectLabels(N.getObjectLabel())), str(_reviseObjectLabels(S[2]))
                         position_specified = True
 
-                        statement = [str(S[1]), relative_obj, this_obj]
+                        if S[2] == 'nothing': relative_obj = 'air'
+
+                        if relative_obj == 'air':
+                            if oc_relation in ['under']:
+                                oc_relation = 'on'
+                                this_obj, relative_obj = relative_obj, this_obj
+                            else:
+                                continue
+
+                        statement = [oc_relation, relative_obj, this_obj]
 
                         # -- handling containers which "hold" things on top of it (viz. cutting board):
                         if S[2] in ingr_in_objects:
                             statement[0] = 'in'
 
-                        # -- append predicate to the list of precondition predicates 
-                        #       for this planning operator:
+                        # -- append predicate to the list of precondition predicates for this planning operator:
                         preconditions.append(statement)
-                        if S[1] in ['in', 'on']:
-                            preconditions.append( ['under', this_obj, relative_obj] )	
+                        if S[1] == 'on' and relative_obj != 'air': # if S[1] in ['in', 'on']:
+                            preconditions.append( ['under', this_obj, relative_obj] )
 
                         # -- check if there are any other states existing that required the relative object's name:
                         for pred in preconditions:
                             if 'LOC' in pred:
                                 pred[pred.index('LOC')] = relative_obj
 
-                    if S[1] in ['empty']:
-                        # -- emptiness is described by the object concept "air":
-                        preconditions.append( [('on' if N.getObjectLabel() in air_on_objects else 'in'), str(_reviseObjectLabels(N.getObjectLabel())), 'air'] )	
+                    # if S[1] in ['empty']:
+                    #     # -- emptiness is described by the object concept "air":
+                    #     preconditions.append( [('on' if N.getObjectLabel() in air_on_objects else 'in'), str(_reviseObjectLabels(N.getObjectLabel())), 'air'] )
+
+                    # if 'contains' in S[1]:
+                    #     for I in N.getIngredients():
+                    #         preconditions.append( [('on' if N.getObjectLabel() in air_on_objects else 'in'), str(_reviseObjectLabels(N.getObjectLabel())), _reviseObjectLabels(I)] )
 
                     if S[1] in state_types:
                         if S[1] == 'mixed':
@@ -486,26 +497,29 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
                             #effects.append(['is-mixed', str(_reviseObjectLabels(N.getObjectLabel())), None])
                         else:
                             # -- else, just treat other types of structural states differently:
-                            preconditions.append( ['is-'+ str(S[1]), str(_reviseObjectLabels(N.getObjectLabel())), None] )	
+                            preconditions.append( ['is-'+ str(S[1]), str(_reviseObjectLabels(N.getObjectLabel())), None] )
 
                 # -- if no position is specified explicitly, then we can assume that the objects are on the work surface:
                 if not position_specified:
                     # -- for now, let's randomly assign certain objects to different parts of the table (i.e., table_m, table_l, or table_r):
                     table_part = table_positions[int(random.random() * len(table_positions))]
 
-                    preconditions.append( ['under', str(_reviseObjectLabels(N.getObjectLabel())), table_part] )	
-                    preconditions.append( ['on', table_part, str(_reviseObjectLabels(N.getObjectLabel()))] )	
+                    preconditions.append( ['under', str(_reviseObjectLabels(N.getObjectLabel())), table_part] )
+                    preconditions.append( ['on', table_part, str(_reviseObjectLabels(N.getObjectLabel()))] )
 
+            # -- remove any duplicate preconditions (turn lists to tuples then back again):
+            preconditions = [list(y) for y in set([tuple(x) for x in preconditions])]
+
+            # NOTE: dropped predicates are those containing references to objects we want removed from the recipe:
             dropped_predicates = []
-
             for predicate in preconditions:
                 # -- if a predicate contains an ingredient that needs to be ignored, then we comment it out:
                 if bool(set(predicate) & set(ingredients_to_ignore)):
                     dropped_predicates.append(predicate)
-                    continue
+                else:
+                    pddl_file.write('\t\t(' + predicate[0] + ' ' + predicate[1] + (str(' ' + predicate[2]) if predicate[2] and len(predicate) > 2 else '') + ')\n')
 
-                pddl_file.write('\t\t(' + predicate[0] + ' ' + predicate[1] + (str(' ' + predicate[2]) if predicate[2] and len(predicate) > 2 else '') + ')\n')
-
+            # -- some objects can be dropped (i.e., simply commented out) from the PDDL file:
             if dropped_predicates:
                 pddl_file.write('\n\t\t; NOTE: the following predicates were removed due to ingredient dropout:\n')
                 for predicate in dropped_predicates:
@@ -523,30 +537,43 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
 
                 # -- review all states in an object node:
                 for S in N.getStatesList():
-                    if S[1] in ['in', 'on', 'under']:
+                    if S[1] in ['in', 'on', 'under'] and bool(S[2]):
                         # -- get the corresponding labels:
-                        this_obj, relative_obj = str(_reviseObjectLabels(N.getObjectLabel())), str(_reviseObjectLabels(S[2]))
+                        oc_relation, this_obj, relative_obj = str(S[1]), str(_reviseObjectLabels(N.getObjectLabel())), str(_reviseObjectLabels(S[2]))
                         position_specified = True
 
-                        statement = [str(S[1]), relative_obj, this_obj]
+                        if S[2] == 'nothing': relative_obj = 'air'
+
+                        if relative_obj == 'air':
+                            if oc_relation in ['under']:
+                                oc_relation = 'on'
+                                this_obj, relative_obj = relative_obj, this_obj
+                            else:
+                                continue
+
+                        statement = [oc_relation, relative_obj, this_obj]
 
                         # -- handling containers which "hold" things on top of it (viz. cutting board):
                         if S[2] in ingr_in_objects:
                             statement[0] = 'in'
 
                         # -- append predicate to the list of effect predicates for this planning operator:
-                        effects.append(statement)	
-                        if S[1] in ['in', 'on']:
-                            effects.append( ['under', this_obj, relative_obj] )	
+                        effects.append(statement)
+                        if S[1] == 'on': # if S[1] in ['in', 'on']:
+                            effects.append( ['under', this_obj, relative_obj] )
 
                         # -- check if there are any other states existing that required the relative object's name:
                         for pred in effects:
                             if 'LOC' in pred:
                                 pred[pred.index('LOC')] = relative_obj
 
-                    if S[1] in ['empty']:
-                        # -- emptiness is described by the object concept "air":
-                        effects.append( [('on' if N.getObjectLabel() in air_on_objects else 'in'), str(_reviseObjectLabels(N.getObjectLabel())), 'air'] )	
+                    # if S[1] in ['empty']:
+                    #     # -- emptiness is described by the object concept "air":
+                    #     effects.append( [('on' if N.getObjectLabel() in air_on_objects else 'in'), str(_reviseObjectLabels(N.getObjectLabel())), 'air'] )
+
+                    # if 'contains' in S[1]:
+                    #     for I in N.getIngredients():
+                    #         effects.append( [('on' if N.getObjectLabel() in air_on_objects else 'in'), str(_reviseObjectLabels(N.getObjectLabel())), _reviseObjectLabels(I)] )
 
                     if S[1] in state_types:
                         if S[1] == 'mixed':
@@ -556,7 +583,7 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
                             #effects.append(['is-mixed', str(_reviseObjectLabels(N.getObjectLabel())), None])
                         else:
                             # -- else, just treat other types of structural states differently:
-                            effects.append( ['is-'+ str(S[1]), str(_reviseObjectLabels(N.getObjectLabel())), None] )	
+                            effects.append( ['is-'+ str(S[1]), str(_reviseObjectLabels(N.getObjectLabel())), None] )
 
                 # -- if no position is specified explicitly, then we can assume that the objects are on the work surface:
                 if not position_specified:
@@ -567,8 +594,11 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
                     else:
                         table_part = table_positions[int(random.random() * len(table_positions))]
 
-                        effects.append( ['under', str(_reviseObjectLabels(N.getObjectLabel())), table_part] )	
-                        effects.append( ['on', table_part, str(_reviseObjectLabels(N.getObjectLabel()))] )	
+                        effects.append( ['under', str(_reviseObjectLabels(N.getObjectLabel())), table_part] )
+                        effects.append( ['on', table_part, str(_reviseObjectLabels(N.getObjectLabel()))] )
+
+            # -- remove any duplicate effects (turn lists to tuples then back again):
+            preconditions = [list(y) for y in set([tuple(x) for x in preconditions])]
 
             parsed_effects = []
             for predicate in effects:
@@ -578,88 +608,80 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
 
             pddl_file.write('\t\t; new effects of executing this functional unit:\n')
             for predicate in parsed_effects:
-                pddl_file.write('\t\t(' + predicate[0] + ' ' + predicate[1] + (str(' ' + predicate[2]) if predicate[2] and len(predicate) > 2 else '') + ')\n')	
+                pddl_file.write('\t\t(' + predicate[0] + ' ' + predicate[1] + (str(' ' + predicate[2]) if predicate[2] and len(predicate) > 2 else '') + ')\n')
 
+            # NOTE: we are searching for any predicates that may exist in both preconditions and effects:
             unchanged_preconditions = []
-            for predicate_1 in preconditions:
-                found_corresponding_pred = False
-                for predicate_2 in effects:
-                    if predicate_1[0] not in ['on', 'in', 'under'] and predicate_2[0] not in ['on', 'in', 'under']:
-                        found_corresponding_pred = True
-
-                    elif predicate_1[0] == predicate_2[0] and predicate_1[1] == predicate_2[1]:
-                        found_corresponding_pred = True
-
-                    #elif predicate_1[0] == predicate_2[0] and predicate_1[2] == predicate_2[2]:
-                    #	found_corresponding_pred = True
-
-                if not found_corresponding_pred:
-                    unchanged_preconditions.append(predicate_1)
-
-            for predicate in effects:
-                if predicate in preconditions:
+            for predicate in preconditions:
+                if predicate in effects:
                     unchanged_preconditions.append(predicate)
+
+            # negated_preconditions = []
+            # for predicate_1 in parsed_effects:
+            #     for predicate_2 in unchanged_preconditions:
+            #         # -- checking for partial overlap for negation of states:
+            #         if predicate_1[0] == predicate_2[0] and predicate_1[1] == predicate_2[1] and predicate_1[2] != predicate_2[2]:
+            #             # -- looking for any evidence of changes:
+            #             add_to_negation = False
+
+            #             if predicate_2[0] == 'under' and predicate_2[2] == 'table':
+            #                 # -- in the case of an object that used to be on the table,
+            #                 #       we need to negate that predicate:
+            #                 add_to_negation = True
+
+            #             # NOTE: checking if ingredients have been transferred in some way:
+            #             if not add_to_negation:
+
+            #                 for N in FU.getOutputList():
+            #                     if 'air' in predicate_2:
+            #                         if N.getObjectLabel() == predicate_2[1].replace('_', ' ') and len(N.getIngredients()) > 0:
+            #                             # -- intuition :- if an object was seen as empty (i.e., has "air") but now it has ingredients,
+            #                             #       then we need to check if that object now contains at least ingredient:
+            #                             add_to_negation = True
+
+            #                     elif N.getObjectLabel() == predicate_2[2].replace('_', ' ') and predicate_2[1].replace('_', ' ') not in N.getIngredients():
+            #                         # -- intuition :- if an object was under something before,
+            #                         #       we check if there is evidence that the object is no longer under that object
+            #                         #           (e.g., the container is empty or no longer contains that object)
+            #                         add_to_negation = True
+
+            #                     if add_to_negation:
+            #                         break
+
+            #             if add_to_negation:
+            #                 negated_preconditions.append(predicate_2)
+            #                 unchanged_preconditions.remove(predicate_2)
+
+            #         elif predicate_1[0] != predicate_2[0] and predicate_1[0] in ['on', 'under'] and predicate_2[0] in ['on', 'under']:
+            #             # -- maybe there is a predicate that indicates some other state change for something else:
+            #             if predicate_1[1] == predicate_2[2] and predicate_1[2] == predicate_2[1]:
+            #                 # -- state-wise negation:
+            #                 negated_preconditions.append(predicate_2)
+            #                 unchanged_preconditions.remove(predicate_2)
+
+            #         elif predicate_1[0] != predicate_2[0] and predicate_1[1] == predicate_2[1] and predicate_1[2] == predicate_2[2]:
+            #             # -- state-wise negation:
+            #             negated_preconditions.append(predicate_2)
+            #             unchanged_preconditions.remove(predicate_2)
+
+            negated_preconditions = []
+            for predicate in preconditions:
+                if predicate not in parsed_effects and predicate not in unchanged_preconditions:
+                    negated_preconditions.append(predicate)
 
             if unchanged_preconditions:
                 pddl_file.write('\n\t\t; preconditions that did not get changed in some way:\n')
                 for predicate in unchanged_preconditions:
                     #if len(set(objects_to_ignore) & set(predicate)) == 0: # -- uncomment this to ignore return to table for some objects
-                    pddl_file.write('\t\t(' + predicate[0] + ' ' + predicate[1] + (str(' ' + predicate[2]) if predicate[2] and len(predicate) > 2 else '') + ')\n')	
-
-            negated_preconditions = []
-            for predicate_1 in parsed_effects:
-                # -- ignore any states that completely match or are duplicated (these are for predicates that are still true):
-                if predicate_1 in preconditions:
-                    continue
-
-                for predicate_2 in preconditions:
-                    if predicate_2 in unchanged_preconditions:
-                        continue
-
-                    # -- checking for partial overlap for negation of states:
-                    if predicate_1[0] == predicate_2[0] and predicate_1[1] == predicate_2[1] and predicate_1[2] != predicate_2[2]:
-                        # -- looking for any evidence of changes:
-                        add_to_negation = False
-
-                        if predicate_2[0] == 'under' and predicate_2[2] == 'table':
-                            # -- in the case of an object that used to be on the table,
-                            #       we need to negate that predicate:
-                            add_to_negation = True
-
-                        if not add_to_negation:
-
-                            for N in FU.getOutputList():
-                                if 'air' in predicate_2:
-                                    if N.getObjectLabel() == predicate_2[1].replace('_', ' ') and len(N.getIngredients()) > 0:
-                                        # -- intuition :- if an object was seen as empty (i.e., has "air") but now it has ingredients,
-                                        #       then we need to check if that object now contains at least ingredient:
-                                        add_to_negation = True
-
-                                elif N.getObjectLabel() == predicate_2[2].replace('_', ' ') and predicate_2[1].replace('_', ' ') not in N.getIngredients():
-                                    # -- intuition :- if an object was under something before, 
-                                    #       we check if there is evidence that the object is no longer under that object
-                                    #           (e.g., the container is empty or no longer contains that object)
-                                    add_to_negation = True
-
-                                if add_to_negation:
-                                    break                        
-
-                        if add_to_negation:
-                            negated_preconditions.append(predicate_2)
-
-
-                    elif predicate_1[0] != predicate_2[0] and predicate_1[1] == predicate_2[1] and predicate_1[2] == predicate_2[2]:
-                        # -- state-wise negation:
-                        negated_preconditions.append(predicate_2)
+                    pddl_file.write('\t\t(' + predicate[0] + ' ' + predicate[1] + (str(' ' + predicate[2]) if predicate[2] and len(predicate) > 2 else '') + ')\n')
 
             if negated_preconditions:
                 pddl_file.write('\n\t\t; negated preconditions:\n')
-                for predicate in negated_preconditions:						
-                    pddl_file.write('\t\t(not (' + predicate[0] + ' ' + predicate[1] + (str(' ' + predicate[2]) if predicate[2] and len(predicate) > 2 else '') + ') )\n')	
-
+                for predicate in negated_preconditions:
+                    pddl_file.write('\t\t(not (' + predicate[0] + ' ' + predicate[1] + (str(' ' + predicate[2]) if predicate[2] and len(predicate) > 2 else '') + ') )\n')
 
             pddl_file.write('\t)\n')
-        
+
             pddl_file.write(')\n')
 
             pddl_file.write('\n')
@@ -679,7 +701,7 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
         #	1. Read the kitchen items / environment file that will usually be provided to the task tree retrieval algorithm.
         #		-- Each item is listed one by one, where they can be delineated by '//' or other tokens.
         #	2. Read an existing domain file to get all of the possible objects that could exist.
-        #	3. Write the kitchen items (as their respective object key) as objects that can possibly exist 
+        #	3. Write the kitchen items (as their respective object key) as objects that can possibly exist
 
         # -- read the objects available to us (i.e. the kitchen) using FGA's _identifyKitchenItems function:
         if FOON_inputs_file:
@@ -725,23 +747,36 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
 
             # -- review all states in an object node:
             for S in N.getStatesList():
-                if S[1] in ['in', 'on', 'under']:
+                if S[1] in ['in', 'on', 'under'] and bool(S[2]):
                     # -- get the corresponding labels:
-                    this_obj, relative_obj = str(_reviseObjectLabels(N.getObjectLabel())), str(_reviseObjectLabels(S[2]))
+                    oc_relation, this_obj, relative_obj = str(S[1]), str(_reviseObjectLabels(N.getObjectLabel())), str(_reviseObjectLabels(S[2]))
                     position_specified = True
 
-                    initiation_set.append( [str(S[1]), relative_obj, this_obj] )	
-                    if S[1] in ['in', 'on']:
-                        initiation_set.append( ['under', this_obj, relative_obj] )	
+                    if S[2] == 'nothing': relative_obj = 'air'
+
+                    if relative_obj == 'air':
+                        if oc_relation in ['under']:
+                            oc_relation = 'on'
+                            this_obj, relative_obj = relative_obj, this_obj
+                        else:
+                            continue
+
+                    initiation_set.append( [oc_relation, relative_obj, this_obj] )
+                    if S[1] == 'on' and relative_obj != 'air': # if S[1] in ['in', 'on']:
+                        initiation_set.append( ['under', this_obj, relative_obj] )
 
                     # -- check if there are any other states existing that required the relative object's name:
                     for pred in initiation_set:
                         if 'LOC' in pred:
                             pred[pred.index('LOC')] = relative_obj
 
-                if S[1] in ['empty']:
-                    # -- emptiness is described by the object concept "air":
-                    initiation_set.append( [('on' if N.getObjectLabel() in air_on_objects else 'in'), str(_reviseObjectLabels(N.getObjectLabel())), 'air'] )	
+                # if S[1] in ['empty']:
+                #     # -- emptiness is described by the object concept "air":
+                #     initiation_set.append( [('on' if N.getObjectLabel() in air_on_objects else 'in'), str(_reviseObjectLabels(N.getObjectLabel())), 'air'] )
+
+                # if S[1] == 'contains':
+                #     for I in N.getIngredients():
+                #         initiation_set.append( [('on' if N.getObjectLabel() in air_on_objects else 'in'), str(_reviseObjectLabels(N.getObjectLabel())), _reviseObjectLabels(I)] )
 
                 if S[1] in state_types:
                     if S[1] == 'mixed':
@@ -750,21 +785,21 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
                         initiation_set.append(['is-mixed', 'LOC', None])
                     else:
                         # -- else, just treat other types of structural states differently:
-                        initiation_set.append( ['is-'+ str(S[1]), str(_reviseObjectLabels(N.getObjectLabel())), None] )	
+                        initiation_set.append( ['is-'+ str(S[1]), str(_reviseObjectLabels(N.getObjectLabel())), None] )
 
             # -- if no position is specified explicitly, then we can assume that the objects are on the work surface:
             if not position_specified:
                 # -- for now, let's randomly assign certain objects to different parts of the table (i.e., table_m, table_l, or table_r):
                 table_part = table_positions[int(random.random() * len(table_positions))]
 
-                initiation_set.append( ['under', str(_reviseObjectLabels(N.getObjectLabel())), table_part] )	
-                initiation_set.append( ['on', table_part, str(_reviseObjectLabels(N.getObjectLabel()))] )	
+                initiation_set.append( ['under', str(_reviseObjectLabels(N.getObjectLabel())), table_part] )
+                initiation_set.append( ['on', table_part, str(_reviseObjectLabels(N.getObjectLabel()))] )
             #endif
         #endfor
 
         for predicate in initiation_set:
             if predicate not in already_seen:
-                already_seen.append(predicate)	
+                already_seen.append(predicate)
                 pddl_file.write('\t(' + predicate[0] + ' ' + predicate[1] + (str(' ' + predicate[2]) if predicate[2] and len(predicate) > 2 else '') + ')\n')
 
         pddl_file.write(')\n')
@@ -778,28 +813,41 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
             # -- make sure we look only at object nodes (as motion nodes are also in this list) and the object node must be a goal:
             if not isinstance(N, fga.FOON.Object) or not N.isGoal:
                 continue
-            
+
             # -- position_specified: flag to check if there were any object-centered information assigned to object node:
             position_specified = False
 
             for S in N.getStatesList():
-                if S[1] in ['in', 'on', 'under']:
+                if S[1] in ['in', 'on', 'under'] and bool(S[2]):
                     # -- get the corresponding labels:
-                    this_obj, relative_obj = str(_reviseObjectLabels(N.getObjectLabel())), str(_reviseObjectLabels(S[2]))
+                    oc_relation, this_obj, relative_obj = str(S[1]), str(_reviseObjectLabels(N.getObjectLabel())), str(_reviseObjectLabels(S[2]))
                     position_specified = True
 
-                    goal_set.append( [str(S[1]), relative_obj, this_obj] )	
-                    if S[1] == 'on':
-                        goal_set.append( ['under', this_obj, relative_obj] )	
+                    if S[2] == 'nothing': relative_obj = 'air'
+
+                    if relative_obj == 'air':
+                        if oc_relation in ['under']:
+                            oc_relation = 'on'
+                            this_obj, relative_obj = relative_obj, this_obj
+                        else:
+                            continue
+
+                    goal_set.append( [oc_relation, relative_obj, this_obj] )
+                    if S[1] == 'on' and relative_obj != 'air':
+                        goal_set.append( ['under', this_obj, relative_obj] )
 
                     # -- check if there are any other states existing that required the relative object's name:
                     for pred in goal_set:
                         if 'LOC' in pred:
                             pred[pred.index('LOC')] = relative_obj
 
-                if S[1] in ['empty']:
-                    # -- emptiness is described by the object concept "air":
-                    goal_set.append( [('on' if N.getObjectLabel() == 'cutting board' else 'in'), str(_reviseObjectLabels(N.getObjectLabel())), 'air'] )	
+                # if S[1] in ['empty']:
+                #     # -- emptiness is described by the object concept "air":
+                #     goal_set.append( [('on' if N.getObjectLabel() == 'cutting board' else 'in'), str(_reviseObjectLabels(N.getObjectLabel())), 'air'] )
+
+                # if S[1] == 'contains':
+                #     for I in N.getIngredients():
+                #         initiation_set.append( [('on' if N.getObjectLabel() in air_on_objects else 'in'), str(_reviseObjectLabels(N.getObjectLabel())), _reviseObjectLabels(I)] )
 
                 if S[1] in state_types:
                     if S[1] == 'mixed':
@@ -808,15 +856,15 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
                         goal_set.append(['is-mixed', 'LOC', None])
                     else:
                         # -- else, just treat other types of structural states differently:
-                        goal_set.append( ['is-'+ str(S[1]), str(_reviseObjectLabels(N.getObjectLabel())), None] )	
+                        goal_set.append( ['is-'+ str(S[1]), str(_reviseObjectLabels(N.getObjectLabel())), None] )
 
             # -- if no position is specified explicitly, then we can assume that the objects are on the work surface (i.e., table):
             if not position_specified:
                 # -- for now, let's randomly assign certain objects to different parts of the table (i.e., table_m, table_l, or table_r):
                 table_part = table_positions[int(random.random() * len(table_positions))]
 
-                goal_set.append( ['under', str(_reviseObjectLabels(N.getObjectLabel())), table_part] )	
-                goal_set.append( ['on', table_part, str(_reviseObjectLabels(N.getObjectLabel()))] )	
+                goal_set.append( ['under', str(_reviseObjectLabels(N.getObjectLabel())), table_part] )
+                goal_set.append( ['on', table_part, str(_reviseObjectLabels(N.getObjectLabel()))] )
 
         for predicate in goal_set:
             # -- if there were some ingredients we wanted to drop, then we drop them also from the goal:
@@ -825,7 +873,7 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
 
             if predicate not in already_seen:
                 pddl_file.write('\t(' + predicate[0] + ' ' + predicate[1] + (str(' ' + predicate[2]) if predicate[2] and len(predicate) > 2 else '') + ')\n')
-                already_seen.append(predicate)	
+                already_seen.append(predicate)
 
         pddl_file.write('))\n')
 
@@ -864,6 +912,6 @@ def _create_PDDL_OCP(file_type=None, ingredient_dropout=0):
 if __name__ == '__main__':
 
     print('\n< FOON_to_PDDL: converting FOON graph to PDDL code (last updated: ' + last_updated + ')>\n')
- 
+
     _check_args()
     _convert_to_PDDL(pddl_format, file_type)

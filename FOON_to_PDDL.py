@@ -28,17 +28,9 @@ import random
 
 last_updated = '21st March, 2025'
 
-path_to_FOON_code = os.path.join(os.path.dirname(__file__), './foon_api/')
-
-# NOTE: we need to import some files from the FOON API directory:
-if path_to_FOON_code not in sys.path:
-    # -- add the directory to the FOON API scripts to the current path:
-    sys.path.append(path_to_FOON_code)
-#endif
-
 # -- attempt to import the FGA script:
 try:
-    import FOON_graph_analyser as fga
+    from foon_api import FOON_graph_analyser as fga
 except ImportError:
     print(" -- ERROR: Missing 'FOON_graph_analyzer.py'!")
     print("\t-- Download here: https://github.com/davidpaulius/foon_api")
